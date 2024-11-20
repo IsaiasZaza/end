@@ -80,4 +80,37 @@ const deleteGift = async ({ id }) => {
     }
 };
 
-module.exports = { createGift, getAllGifts, deleteGift };
+const updateGiftQuantity = async ({ id, quantidade }) => {
+    try {
+        // Verificar se o presente com o id fornecido existe
+        const giftExists = await prisma.gift.findUnique({
+            where: { id },
+        });
+
+        if (!giftExists) {
+            return {
+                status: 404,
+                data: { message: 'Presente não encontrado' },
+            };
+        }
+
+        // Atualizar a quantidade do presente
+        const updatedGift = await prisma.gift.update({
+            where: { id },
+            data: { quantidade },
+        });
+
+        return {
+            status: 200,
+            data: mapGift(updatedGift),
+        };
+    } catch (error) {
+        console.error('Erro ao atualizar a quantidade do presente:', error.message);
+        return {
+            status: 500,
+            data: { message: 'OCORREU UM ERRO AO ATUALIZAR A QUANTIDADE DO PRESENTE' },
+        };
+    }
+};
+
+module.exports = { createGift, getAllGifts, deleteGift, updateGiftQuantity };
