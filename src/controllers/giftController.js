@@ -113,4 +113,45 @@ const updateGiftQuantity = async ({ id, quantidade }) => {
     }
 };
 
+const decrementGiftQuantity = async ({ id, quantidade }) => {
+    try {
+        // Verificar se o presente com o id fornecido existe
+        const giftExists = await prisma.gift.findUnique({
+            where: { id },
+        });
+
+        if (!giftExists) {
+            return {
+                status: 404,
+                data: { message: 'Presente não encontrado' },
+            };
+        }
+
+        // Verificar se a quantidade solicitada é maior que 0 e não excede a quantidade disponível
+        if (quantidade <= 0 || quantidade > giftExists.quantidade) {
+            return {
+                status: 400,
+                data: { message: 'Quantidade inválida' },
+            };
+        }
+
+        // Atualizar a quantidade do presente
+        const updatedGift = await prisma.gift.update({
+            where: { id },
+            data: { quantidade: giftExists.quantidade - quantidade },
+        });
+
+        return {
+            status: 200,
+            data: mapGift(updatedGift),
+        };
+    } catch (error) {
+        console.error('Erro ao decrementar a quantidade do presente:', error.message);
+        return {
+            status: 500,
+            data: { message: 'OCORREU UM ERRO AO DECREMENTAR A QUANTIDADE DO PRESENTE' },
+        };
+    }
+};
+
 module.exports = { createGift, getAllGifts, deleteGift, updateGiftQuantity };

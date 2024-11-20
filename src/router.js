@@ -26,4 +26,14 @@ router.delete('/gift/:id', async (req, res) => {
     return res.status(status).json(data);
 });
 
+router.delete('/gifts/decrement/:id', async (req, res) => {
+    const { id } = req.params;
+    const { quantidade } = req.body;
+
+    // Chama a função de decremento
+    const result = await decrementGiftQuantity({ id: parseInt(id), quantidade });
+
+    res.status(result.status).json(result.data);
+});
+
 module.exports = router;
