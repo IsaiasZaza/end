@@ -47,4 +47,37 @@ const getAllGifts = async () => {
     }
 };
 
-module.exports = { createGift, getAllGifts };
+// Função para excluir presente com validação
+const deleteGift = async ({ id }) => {
+    try {
+        // Verificar se o presente com o id fornecido existe
+        const giftExists = await prisma.gift.findUnique({
+            where: { id },
+        });
+
+        if (!giftExists) {
+            return {
+                status: 404,
+                data: { message: 'Presente não encontrado' },
+            };
+        }
+
+        // Excluir o presente
+        await prisma.gift.delete({
+            where: { id },
+        });
+
+        return {
+            status: 200,
+            data: { message: 'Presente excluído com sucesso' },
+        };
+    } catch (error) {
+        console.error('Erro ao excluir presente:', error.message);
+        return {
+            status: 500,
+            data: { message: 'OCORREU UM ERRO AO EXCLUIR O PRESENTE' },
+        };
+    }
+};
+
+module.exports = { createGift, getAllGifts, deleteGift };
