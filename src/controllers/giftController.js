@@ -154,4 +154,4 @@ const decrementGiftQuantity = async ({ id, quantidade }) => {
     }
 };
 
-module.exports = { createGift, getAllGifts, deleteGift, updateGiftQuantity };
+module.exports = { createGift, getAllGifts, deleteGift, updateGiftQuantity, decrementGiftQuantity };

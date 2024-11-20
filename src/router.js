@@ -31,7 +31,7 @@ router.delete('/gifts/decrement/:id', async (req, res) => {
     const { quantidade } = req.body;
 
     // Chama a função de decremento
-    const result = await decrementGiftQuantity({ id: parseInt(id), quantidade });
+    const result = await giftController.decrementGiftQuantity({ id: parseInt(id), quantidade });
 
     res.status(result.status).json(result.data);
 });
