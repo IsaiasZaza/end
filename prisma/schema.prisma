@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://gift-api-db_owner:ynVZkr4K8gpX@ep-bitter-math-a50amfm4.us-east-2.aws.neon.tech/gift-api-db?sslmode=require"
 }
 
 model Gift {
