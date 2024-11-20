@@ -1,9 +1,13 @@
 const express = require('express');
 const routes = require('./router');
+const cors = require('cors');
+
 
 module.exports = (config) => {
+
     const { port } = config;
     const app = express();
+    app.use(cors()); 
 
     // Middleware para interpretar JSON no corpo da requisição
     app.use(express.json());
